@@ -79,7 +79,6 @@ processors:
       target: ''
       fields:
         organization.name: ${ORGANIZATION:default}
-        service.type: ${SERVICE_TYPE:''}
 
 #================================ Logging =====================================
 # Available log levels are: error, warning, info, debug
