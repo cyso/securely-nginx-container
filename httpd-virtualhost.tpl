@@ -1,7 +1,6 @@
 <VirtualHost *:TEMPLATE_PORT>
 
     ProxyTimeout              60
-    ProxyErrorOverride        On
     ProxyMaxForwards          15
 
     ProxyPass                 /error   !
