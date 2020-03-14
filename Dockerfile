@@ -8,6 +8,7 @@ RUN curl -L -O https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-7.
 
 FROM owasp/modsecurity-crs:v3.2-modsec2-apache
 LABEL maintainer="franziska.buehler@owasp.org"
+ENV SEC_RULE_ENGINE On
 
 COPY --from=0 securely-blocker /usr/local/
 RUN touch /etc/securely-blocker-db
