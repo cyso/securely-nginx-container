@@ -1,4 +1,7 @@
 <VirtualHost *:TEMPLATE_PORT>
+    LuaScope                  thread
+    LuaRoot                   /usr/local/bin/apache2
+    LuaHookFixups             gcp-auth.lua authenticate
 
     ProxyTimeout              60
     ProxyMaxForwards          15

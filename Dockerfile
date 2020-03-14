@@ -15,6 +15,9 @@ RUN touch /etc/securely-blocker-db
 
 COPY --from=0 filebeat-7.5.0-amd64.deb /
 RUN dpkg -i /filebeat-7.5.0-amd64.deb && rm /filebeat-7.5.0-amd64.deb
+RUN apt-get update && apt-get install \
+      lua-socket && \
+    rm -rf /var/lib/apt/lists/*
 
 COPY 403.html /var/www/html/error/
 COPY CRS-logo-full_size-512x257.png /var/www/html/error/
@@ -25,6 +28,9 @@ COPY modsecurity.conf /etc/modsecurity.d/modsecurity.conf
 COPY filebeat/filebeat.yml /etc/filebeat/filebeat.yml
 COPY httpd-virtualhost.tpl /etc/apache2/conf/
 COPY httpd.conf /etc/apache2/conf/httpd.conf
+
+COPY lua /usr/local/bin/apache2
+RUN chown -R www-data /usr/local/bin/apache2/*
 
 COPY docker-entrypoint.sh /
 
