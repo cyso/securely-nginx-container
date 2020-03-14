@@ -71,7 +71,7 @@ function authenticate(r)
         update_jwt_cache(upstream)
     end
 
-    r.headers_in['Proxy-Authorization'] = jwt_cache[upstream].token
+    r.headers_in['X-Cloud-Authorization'] = jwt_cache[upstream].token
 
     return apache2.DECLINED -- let the proxy handler do this instead
 end
