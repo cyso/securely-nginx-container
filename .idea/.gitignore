@@ -6,3 +6,8 @@
 /dataSources.local.xml
 # Editor-based HTTP Client requests
 /httpRequests/
+/misc.xml
+/modsecurity-serverless.iml
+/modules.xml
+/inspectionProfiles/profiles_settings.xml
+/vcs.xml
