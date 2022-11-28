@@ -18,10 +18,12 @@ data:
         - /opt/securely/modsec_audit.log
       fields:
         event.module: modsecurity
-        event.dataset: modsecurity.json
+        event.dataset: modsecurity.audit
         organization.name: {{ .Values.config.filebeat.organization_name}}
-      fields_under_root: true
-    
+      multiline:
+        pattern: "^-{2,3}[a-zA-Z0-9]{8}-{1,3}Z--$"
+        negate: true
+        match: before
     output.logstash:
       # The Logstash hosts
       hosts:

@@ -3,5 +3,5 @@ name: securely-proxy
 description: A chart to be used to deploy an nginx proxy with owasp crs and seurely sidecars
 
 type: application
-version: 0.1.3
+version: 0.1.4
 
