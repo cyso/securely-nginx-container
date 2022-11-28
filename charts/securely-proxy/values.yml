@@ -1,0 +1,32 @@
+config:
+  nginx_modsec:
+    # See: https://github.com/coreruleset/modsecurity-docker/blob/master/README.md#modsecurity-env-variables
+    PARANOIA: "1"
+  securely_blocker:
+    # Required parameters
+    GRPC_URL:
+    USERNAME:
+    PASSWORD: 
+
+volumes:
+  securely_volume:
+    sizeLimit: 100Mi
+
+containers:
+  replicas: 1
+  nginx_modsec:
+    image: bruinsieboy/securely-crs-proxy:latest
+    resources:
+      requests:
+        cpu: "200m"
+        memory: "200Mi"
+      limits:
+        memory: "2Gi"
+  securely_blocker:
+    image: registry.securely.ai/securely/common/blocker:latest
+    resources:
+      requests:
+        cpu: "10m"
+        memory: "30Mi"
+      limits:
+        memory: "250Mi"

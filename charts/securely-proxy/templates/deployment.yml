@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-securely-proxy
+spec:
+  replicas: {{ .Values.containers.replicas }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ .Release.Name }}
+      app.kubernetes.io/instance: securely-proxy
+  template:
+    metadata:
+      annotations:
+        checksum/config-nginx-modsec: {{ include (print $.Template.BasePath "/configmap-nginx-modsec.yml") . | sha256sum }}
+        checksum/config-securely-blocker: {{ include (print $.Template.BasePath "/configmap-securely-blocker.yml") . | sha256sum }}
+      labels:
+        app.kubernetes.io/name: {{ .Release.Name }}
+        app.kubernetes.io/instance: securely-proxy
+    spec:
+      volumes:
+      - name: securely-volume
+        emptyDir:
+          sizeLimit: {{ .Values.volumes.securely_volume.sizeLimit }}
+      containers:
+      - name: nginx-modsec
+        image:  {{ .Values.containers.nginx_modsec.image }}
+        envFrom:
+        - configMapRef:
+            name: {{ .Release.Name }}-nginx-modsec
+        volumeMounts:
+        - name: securely-volume
+          mountPath: /opt/securely
+        resources: 
+          {{- toYaml .Values.containers.nginx_modsec.resources | nindent 10}}
+      - name: securely-blocker
+        image: {{ .Values.containers.securely_blocker.image }}
+        envFrom:
+        - configMapRef:
+            name: {{ .Release.Name }}-securely-blocker
+        volumeMounts:
+        - name: securely-volume
+          mountPath: /opt/securely
+        resources: 
+          {{- toYaml .Values.containers.securely_blocker.resources | nindent 10}}
+        
