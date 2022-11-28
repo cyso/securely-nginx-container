@@ -1,0 +1,28 @@
+---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: {{ .Release.Name }}-securely-filebeat
+data:
+  filebeat.yml: |
+    filebeat.inputs:
+    - type: log
+      paths:
+        - /opt/securely/access.log
+      fields:
+        event.module: nginx
+        event.dataset: nginx.access
+        organization.name: {{ .Values.config.filebeat.organization_name}}
+    - type: log
+      paths:
+        - /opt/securely/modsec_audit.log
+      fields:
+        event.module: modsecurity
+        event.dataset: modsecurity.json
+        organization.name: {{ .Values.config.filebeat.organization_name}}
+      fields_under_root: true
+    
+    output.logstash:
+      # The Logstash hosts
+      hosts:
+        {{ toYaml .Values.config.filebeat.logstash_hosts}}

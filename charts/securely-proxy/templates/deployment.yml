@@ -11,8 +11,9 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config-nginx-modsec: {{ include (print $.Template.BasePath "/configmap-nginx-modsec.yml") . | sha256sum }}
+        checksum/config-securely-nginx-modsec: {{ include (print $.Template.BasePath "/configmap-securely-nginx-modsec.yml") . | sha256sum }}
         checksum/config-securely-blocker: {{ include (print $.Template.BasePath "/configmap-securely-blocker.yml") . | sha256sum }}
+        checksum/config-securely-filebeat: {{ include (print $.Template.BasePath "/configmap-securely-filebeat.yml") . | sha256sum }}
       labels:
         app.kubernetes.io/name: {{ .Release.Name }}
         app.kubernetes.io/instance: securely-proxy
@@ -21,12 +22,15 @@ spec:
       - name: securely-volume
         emptyDir:
           sizeLimit: {{ .Values.volumes.securely_volume.sizeLimit }}
+      - name: filebeat-config
+        configMap:
+          name: {{ .Release.Name }}-securely-filebeat
       containers:
       - name: nginx-modsec
         image:  {{ .Values.containers.nginx_modsec.image }}
         envFrom:
         - configMapRef:
-            name: {{ .Release.Name }}-nginx-modsec
+            name: {{ .Release.Name }}-securely-nginx-modsec
         volumeMounts:
         - name: securely-volume
           mountPath: /opt/securely
@@ -42,4 +46,15 @@ spec:
           mountPath: /opt/securely
         resources: 
           {{- toYaml .Values.containers.securely_blocker.resources | nindent 10}}
+      - name: filebeat
+        image: {{ .Values.containers.filebeat.image }}
+        volumeMounts:
+        - name: securely-volume
+          mountPath: /opt/securely
+        - name: filebeat-config
+          readOnly: true
+          mountPath: /usr/share/filebeat/filebeat.yml
+          subPath: filebeat.yml
+        resources: 
+          {{- toYaml .Values.containers.filebeat.resources | nindent 10}}
         

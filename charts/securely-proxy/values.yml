@@ -6,7 +6,12 @@ config:
     # Required parameters
     GRPC_URL:
     USERNAME:
-    PASSWORD: 
+    PASSWORD:
+  filebeat:
+    # Required parameters
+    organization_name:
+    service_name:
+    logstash_hosts:
 
 volumes:
   securely_volume:
@@ -30,3 +35,11 @@ containers:
         memory: "30Mi"
       limits:
         memory: "250Mi"
+  filebeat:
+    image: docker.elastic.co/beats/filebeat:7.17.7
+    resources:
+      requests:
+        cpu: "50m"
+        memory: "120Mi"
+      limits:
+        memory: "500Mi"

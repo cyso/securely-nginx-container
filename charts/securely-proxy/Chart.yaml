@@ -1,6 +1,6 @@
 apiVersion: v2
 name: securely-proxy
-description: A Helm chart for Kubernetes
+description: A chart to be used to deploy an nginx proxy with owasp crs and seurely sidecars
 
 type: application
 version: 0.1.2
