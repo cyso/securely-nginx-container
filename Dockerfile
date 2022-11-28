@@ -4,35 +4,14 @@ RUN curl -L -o securely-blocker.zip 'https://git.securely.ai/securely/common/blo
     unzip securely-blocker.zip && \
     rm securely-blocker.zip
 
-RUN curl -L -O https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-7.9.1-amd64.deb
+RUN curl -L -O https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-7.9.1-linux-x86_64.tar.gz
 
-FROM owasp/modsecurity-crs:v3.2-modsec2-apache
-LABEL maintainer="franziska.buehler@owasp.org"
-ENV SEC_RULE_ENGINE On
+FROM owasp/modsecurity-crs:3.3.4-nginx-alpine-202211240811
 
-COPY --from=0 securely-blocker /usr/local/
-RUN touch /etc/securely-blocker-db
+RUN mkdir /lib64 && \
+    ln -s /lib/libc.musl-x86_64.so.1 /lib64/ld-linux-x86-64.so.2
+COPY --from=0 securely-blocker /usr/local/bin
+RUN touch /etc/securely-blocker-db 
 
-COPY --from=0 filebeat-*.deb /
-RUN dpkg -i /filebeat-*.deb && rm /filebeat-*.deb
-RUN apt-get update && apt-get install \
-      lua-socket && \
-    rm -rf /var/lib/apt/lists/*
-
-COPY 403.html /var/www/html/error/
-COPY CRS-logo-full_size-512x257.png /var/www/html/error/
-
-RUN mkdir /var/log/apache2/audit
-
-COPY modsecurity.conf /etc/modsecurity.d/modsecurity.conf
-COPY filebeat/filebeat.yml /etc/filebeat/filebeat.yml
-COPY httpd-virtualhost.tpl /etc/apache2/conf/
-COPY httpd.conf /etc/apache2/conf/httpd.conf
-
-COPY lua /usr/local/bin/apache2
-RUN chown -R www-data /usr/local/bin/apache2/*
-
-COPY docker-entrypoint.sh /
-
-ENTRYPOINT ["/docker-entrypoint.sh"]
-CMD ["apachectl", "-f", "/etc/apache2/conf/httpd.conf", "-D", "FOREGROUND"]
+COPY docker-entrypoint.sh /docker-entrypoint.d/1000-securely-entrypoint.sh
+COPY modsecurity-securely-blocker.conf /opt/owasp-crs/rules
