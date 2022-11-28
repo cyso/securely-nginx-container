@@ -1,2 +1,2 @@
 #!/bin/sh
-/usr/local/bin/reload-nginx-blocker.sh /etc/securely-blocker-db &
+/usr/local/bin/reload-nginx-blocker.sh /opt/securely/blocker-db &
