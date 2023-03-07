@@ -1,49 +1,46 @@
 nginx_modsec:
+  image: bruinsieboy/securely-crs-proxy:latest
   config:
     # See: https://github.com/coreruleset/modsecurity-docker/blob/master/README.md#modsecurity-env-variables
     PARANOIA: "1"
+  resources:
+    requests:
+      cpu: "200m"
+      memory: "200Mi"
+    limits:
+      memory: "2Gi"
 
 securely_blocker:
   enabled: true
+  image: registry.securely.ai/securely/common/blocker:latest
   config:
-    # Required parameters
     GRPC_URL:
     USERNAME:
     PASSWORD:
+  resources:
+    requests:
+      cpu: "10m"
+      memory: "30Mi"
+    limits:
+      memory: "250Mi"
 
 filebeat:
-  # Required parameters
-  organization_name:
-  service_name:
-  logstash_hosts:
+  enabled: true
+  image: docker.elastic.co/beats/filebeat:7.17.7
+  config:
+    organization_name:
+    service_name:
+    logstash_hosts:
+  resources:
+    requests:
+      cpu: "50m"
+      memory: "120Mi"
+    limits:
+      memory: "500Mi"
+
+replicas: 1
 
 volumes:
   securely_volume:
     sizeLimit: 100Mi
 
-containers:
-  replicas: 1
-  nginx_modsec:
-    image: bruinsieboy/securely-crs-proxy:latest
-    resources:
-      requests:
-        cpu: "200m"
-        memory: "200Mi"
-      limits:
-        memory: "2Gi"
-  securely_blocker:
-    image: registry.securely.ai/securely/common/blocker:latest
-    resources:
-      requests:
-        cpu: "10m"
-        memory: "30Mi"
-      limits:
-        memory: "250Mi"
-  filebeat:
-    image: docker.elastic.co/beats/filebeat:7.17.7
-    resources:
-      requests:
-        cpu: "50m"
-        memory: "120Mi"
-      limits:
-        memory: "500Mi"

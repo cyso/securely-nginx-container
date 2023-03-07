@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: {{ .Release.Name }}-securely-proxy
 spec:
-  replicas: {{ .Values.containers.replicas }}
+  replicas: {{ .Values.replicas }}
   selector:
     matchLabels:
       app.kubernetes.io/name: {{ .Release.Name }}
@@ -27,7 +27,7 @@ spec:
           name: {{ .Release.Name }}-securely-filebeat
       containers:
       - name: nginx-modsec
-        image:  {{ .Values.containers.nginx_modsec.image }}
+        image:  {{ .Values.nginx_modsec.image }}
         envFrom:
         - configMapRef:
             name: {{ .Release.Name }}-securely-nginx-modsec
@@ -35,10 +35,10 @@ spec:
         - name: securely-volume
           mountPath: /opt/securely
         resources: 
-          {{- toYaml .Values.containers.nginx_modsec.resources | nindent 10}}
+          {{- toYaml .Values.nginx_modsec.resources | nindent 10}}
       {{- if eq .Values.securely_blocker.enabled true }}
       - name: securely-blocker
-        image: {{ .Values.containers.securely_blocker.image }}
+        image: {{ .Values.securely_blocker.image }}
         envFrom:
         - configMapRef:
             name: {{ .Release.Name }}-securely-blocker
@@ -46,10 +46,10 @@ spec:
         - name: securely-volume
           mountPath: /opt/securely
         resources: 
-          {{- toYaml .Values.containers.securely_blocker.resources | nindent 10}}
+          {{- toYaml .Values.securely_blocker.resources | nindent 10}}
       {{- end }}
       - name: filebeat
-        image: {{ .Values.containers.filebeat.image }}
+        image: {{ .Values.filebeat.image }}
         volumeMounts:
         - name: securely-volume
           mountPath: /opt/securely
@@ -58,5 +58,5 @@ spec:
           mountPath: /usr/share/filebeat/filebeat.yml
           subPath: filebeat.yml
         resources: 
-          {{- toYaml .Values.containers.filebeat.resources | nindent 10}}
+          {{- toYaml .Values.filebeat.resources | nindent 10}}
         
