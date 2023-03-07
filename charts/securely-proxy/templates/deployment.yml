@@ -13,6 +13,7 @@ spec:
       annotations:
         checksum/config-securely-nginx-modsec: {{ include (print $.Template.BasePath "/configmap-securely-nginx-modsec.yml") . | sha256sum }}
         checksum/config-securely-blocker: {{ include (print $.Template.BasePath "/configmap-securely-blocker.yml") . | sha256sum }}
+        checksum/config-securely-secruleconfigurator: {{ include (print $.Template.BasePath "/configmap-securely-secruleconfigurator.yml") . | sha256sum }}
         checksum/config-securely-filebeat: {{ include (print $.Template.BasePath "/configmap-securely-filebeat.yml") . | sha256sum }}
       labels:
         app.kubernetes.io/name: {{ .Release.Name }}

@@ -6,7 +6,7 @@ metadata:
 data:
   MODSEC_AUDIT_LOG: /opt/securely/modsec_audit.log
   MODSEC_AUDIT_LOG_FORMAT: Native
-  ACCESSLOG: /opt/securely/access.log
+  METRICSLOG:  /opt/securely/access.log
   {{- if .Values.nginx_modsec.config }}
   {{- toYaml .Values.nginx_modsec.config | nindent 2}}
   {{- end }}
