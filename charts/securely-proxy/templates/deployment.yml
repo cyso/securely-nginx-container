@@ -48,6 +48,7 @@ spec:
         resources: 
           {{- toYaml .Values.securely_blocker.resources | nindent 10}}
       {{- end }}
+      {{- if eq .Values.filebeat.enabled true }}
       - name: filebeat
         image: {{ .Values.filebeat.image }}
         volumeMounts:
@@ -59,4 +60,4 @@ spec:
           subPath: filebeat.yml
         resources: 
           {{- toYaml .Values.filebeat.resources | nindent 10}}
-        
+      {{- end }}

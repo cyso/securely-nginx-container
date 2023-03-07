@@ -1,3 +1,4 @@
+{{- if eq .Values.filebeat.enabled true }}
 ---
 kind: ConfigMap
 apiVersion: v1
@@ -28,3 +29,4 @@ data:
       # The Logstash hosts
       hosts:
         {{ toYaml .Values.filebeat.config.logstash_hosts}}
+{{- end }}
