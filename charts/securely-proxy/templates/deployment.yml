@@ -48,6 +48,18 @@ spec:
         resources: 
           {{- toYaml .Values.securely_blocker.resources | nindent 10}}
       {{- end }}
+      {{- if eq .Values.securely_secruleconfigurator.enabled true }}
+      - name: securely-blocker
+        image: {{ .Values.securely_secruleconfigurator.image }}
+        envFrom:
+        - configMapRef:
+            name: {{ .Release.Name }}-securely-secruleconfigurator
+        volumeMounts:
+        - name: securely-volume
+          mountPath: /opt/securely
+        resources: 
+          {{- toYaml .Values.securely_secruleconfigurator.resources | nindent 10}}
+      {{- end }}
       {{- if eq .Values.filebeat.enabled true }}
       - name: filebeat
         image: {{ .Values.filebeat.image }}

@@ -1,0 +1,13 @@
+{{- if eq .Values.secruleconfigurator.enabled true }}
+---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: {{ .Release.Name }}-securely-secruleconfigurator
+data:
+  STARTUP_EXCLUSION_FILE: /opt/securely/secruleconfigurator/startup_exclusion_file.conf
+  RUNTIME_EXCLUSION_FILE: /opt/securely/secruleconfigurator/runtime_exclusion_file.conf
+  STARTUP_BLOCKING_RULES_FILE: /opt/securely/secruleconfigurator/startup_blocking_rules_file.conf
+  RUNTIME_BLOCKING_RULES_FILE: /opt/securely/secruleconfigurator/runtime_blocking_rules_file.conf
+  {{- toYaml .Values.secruleconfigurator.config  | nindent 2}}
+{{- end }}
