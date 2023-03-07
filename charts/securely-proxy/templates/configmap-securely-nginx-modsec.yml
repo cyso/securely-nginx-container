@@ -7,6 +7,6 @@ data:
   MODSEC_AUDIT_LOG: /opt/securely/modsec_audit.log
   MODSEC_AUDIT_LOG_FORMAT: Native
   ACCESSLOG: /opt/securely/access.log
-  {{- if .Values.config.nginx_modsec }}
-  {{- toYaml .Values.config.nginx_modsec | nindent 2}}
+  {{- if .Values.nginx_modsec.config }}
+  {{- toYaml .Values.nginx_modsec.config | nindent 2}}
   {{- end }}

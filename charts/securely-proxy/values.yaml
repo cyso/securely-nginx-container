@@ -1,7 +1,6 @@
 config:
   nginx_modsec:
-    # See: https://github.com/coreruleset/modsecurity-docker/blob/master/README.md#modsecurity-env-variables
-    PARANOIA: "1"
+    
   securely_blocker:
 
   filebeat:
@@ -9,6 +8,12 @@ config:
     organization_name:
     service_name:
     logstash_hosts:
+
+nginx_modsec:
+  enabled: true
+  config:
+    # See: https://github.com/coreruleset/modsecurity-docker/blob/master/README.md#modsecurity-env-variables
+    PARANOIA: "1"
 
 securely_blocker:
   enabled: true
