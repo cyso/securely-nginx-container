@@ -9,6 +9,19 @@ nginx_modsec:
       memory: "200Mi"
     limits:
       memory: "2Gi"
+  livenessProbe:
+    exec:
+      command:
+        - curl
+        - http://127.0.0.1/metrics/nginx
+    periodSeconds: 3
+  startupProbe:
+    exec:
+      command:
+        - curl
+        - http://127.0.0.1/metrics/nginx
+    initialDelaySeconds: 8
+    periodSeconds: 5
 
 securely_blocker:
   enabled: true

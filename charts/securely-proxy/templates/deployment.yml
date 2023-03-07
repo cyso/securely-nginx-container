@@ -39,8 +39,18 @@ spec:
         volumeMounts:
         - name: securely-volume
           mountPath: /opt/securely
+        {{- with .Values.nginx_modsec.resources }}
         resources: 
-          {{- toYaml .Values.nginx_modsec.resources | nindent 10}}
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
+        {{- with .Values.nginx_modsec.livenessProbe }}
+        livenessProbe:
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
+        {{- with .Values.nginx_modsec.readinessProbe }}
+        readinessProbe:
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
       {{- if eq .Values.securely_blocker.enabled true }}
       - name: securely-blocker
         image: {{ .Values.securely_blocker.image }}
@@ -50,8 +60,18 @@ spec:
         volumeMounts:
         - name: securely-volume
           mountPath: /opt/securely
+        {{- with .Values.securely_blocker.resources }}
         resources: 
-          {{- toYaml .Values.securely_blocker.resources | nindent 10}}
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
+        {{- with .Values.securely_blocker.livenessProbe }}
+        livenessProbe:
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
+        {{- with .Values.securely_blocker.readinessProbe }}
+        readinessProbe:
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
       {{- end }}
       {{- if eq .Values.securely_secruleconfigurator.enabled true }}
       - name: securely-secruleconfigurator
@@ -62,8 +82,18 @@ spec:
         volumeMounts:
         - name: securely-volume
           mountPath: /opt/securely
+        {{- with .Values.securely_secruleconfigurator.resources }}
         resources: 
-          {{- toYaml .Values.securely_secruleconfigurator.resources | nindent 10}}
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
+        {{- with .Values.securely_secruleconfigurator.livenessProbe }}
+        livenessProbe:
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
+        {{- with .Values.securely_secruleconfigurator.readinessProbe }}
+        readinessProbe:
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
       {{- end }}
       {{- if eq .Values.filebeat.enabled true }}
       - name: filebeat
@@ -77,6 +107,16 @@ spec:
           readOnly: true
           mountPath: /usr/share/filebeat/filebeat.yml
           subPath: filebeat.yml
+        {{- with .Values.filebeat.resources }}
         resources: 
-          {{- toYaml .Values.filebeat.resources | nindent 10}}
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
+        {{- with .Values.filebeat.livenessProbe }}
+        livenessProbe:
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
+        {{- with .Values.filebeat.readinessProbe }}
+        readinessProbe:
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
       {{- end }}
