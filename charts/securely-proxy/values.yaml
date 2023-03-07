@@ -1,16 +1,4 @@
-config:
-  nginx_modsec:
-    
-  securely_blocker:
-
-  filebeat:
-    # Required parameters
-    organization_name:
-    service_name:
-    logstash_hosts:
-
 nginx_modsec:
-  enabled: true
   config:
     # See: https://github.com/coreruleset/modsecurity-docker/blob/master/README.md#modsecurity-env-variables
     PARANOIA: "1"
@@ -22,6 +10,12 @@ securely_blocker:
     GRPC_URL:
     USERNAME:
     PASSWORD:
+
+filebeat:
+  # Required parameters
+  organization_name:
+  service_name:
+  logstash_hosts:
 
 volumes:
   securely_volume:

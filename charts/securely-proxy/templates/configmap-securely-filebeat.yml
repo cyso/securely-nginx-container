@@ -12,14 +12,14 @@ data:
       fields:
         event.module: nginx
         event.dataset: nginx.access
-        organization.name: {{ .Values.config.filebeat.organization_name}}
+        organization.name: {{ .Values.filebeat.organization_name}}
     - type: log
       paths:
         - /opt/securely/modsec_audit.log
       fields:
         event.module: modsecurity
         event.dataset: modsecurity.audit
-        organization.name: {{ .Values.config.filebeat.organization_name}}
+        organization.name: {{ .Values.filebeat.organization_name}}
       multiline:
         pattern: "^-{2,3}[a-zA-Z0-9]{8}-{1,3}Z--$"
         negate: true
@@ -27,4 +27,4 @@ data:
     output.logstash:
       # The Logstash hosts
       hosts:
-        {{ toYaml .Values.config.filebeat.logstash_hosts}}
+        {{ toYaml .Values.filebeat.logstash_hosts}}
