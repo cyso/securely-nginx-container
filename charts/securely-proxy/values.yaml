@@ -3,15 +3,20 @@ config:
     # See: https://github.com/coreruleset/modsecurity-docker/blob/master/README.md#modsecurity-env-variables
     PARANOIA: "1"
   securely_blocker:
-    # Required parameters
-    GRPC_URL:
-    USERNAME:
-    PASSWORD:
+
   filebeat:
     # Required parameters
     organization_name:
     service_name:
     logstash_hosts:
+
+securely_blocker:
+  enabled: true
+  config:
+    # Required parameters
+    GRPC_URL:
+    USERNAME:
+    PASSWORD:
 
 volumes:
   securely_volume:

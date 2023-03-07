@@ -36,6 +36,7 @@ spec:
           mountPath: /opt/securely
         resources: 
           {{- toYaml .Values.containers.nginx_modsec.resources | nindent 10}}
+      {{- if eq .Values.securely_blocker.enabled true }}
       - name: securely-blocker
         image: {{ .Values.containers.securely_blocker.image }}
         envFrom:
@@ -46,6 +47,7 @@ spec:
           mountPath: /opt/securely
         resources: 
           {{- toYaml .Values.containers.securely_blocker.resources | nindent 10}}
+      {{- end }}
       - name: filebeat
         image: {{ .Values.containers.filebeat.image }}
         volumeMounts:

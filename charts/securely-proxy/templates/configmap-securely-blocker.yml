@@ -1,3 +1,4 @@
+{{- if eq .Values.securely_blocker.enabled true }}
 ---
 kind: ConfigMap
 apiVersion: v1
@@ -5,6 +6,5 @@ metadata:
   name: {{ .Release.Name }}-securely-blocker
 data:
   FILE: /opt/securely/blocker-db 
-  {{- if .Values.config.securely_blocker }}
-  {{- toYaml .Values.config.securely_blocker  | nindent 2}}
-  {{- end }}
+  {{- toYaml .Values.securely_blocker.config  | nindent 2}}
+{{- end }}
