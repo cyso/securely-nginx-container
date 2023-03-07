@@ -14,6 +14,9 @@ data:
         event.module: nginx
         event.dataset: nginx.access
         organization.name: {{ .Values.filebeat.config.organization_name}}
+        {{- with .Values.filebeat.config.service_name }}
+        service.name: {{ . }}
+        {{- end }}
     - type: log
       paths:
         - /opt/securely/modsec_audit.log
@@ -21,6 +24,9 @@ data:
         event.module: modsecurity
         event.dataset: modsecurity.audit
         organization.name: {{ .Values.filebeat.config.organization_name}}
+        {{- with .Values.filebeat.config.service_name }}
+        service.name: {{ . }}
+        {{- end }}
       multiline:
         pattern: "^-{2,3}[a-zA-Z0-9]{8}-{1,3}Z--$"
         negate: true

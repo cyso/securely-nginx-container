@@ -18,6 +18,10 @@ spec:
         app.kubernetes.io/name: {{ .Release.Name }}
         app.kubernetes.io/instance: securely-proxy
     spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       volumes:
       - name: securely-volume
         emptyDir:
@@ -49,7 +53,7 @@ spec:
           {{- toYaml .Values.securely_blocker.resources | nindent 10}}
       {{- end }}
       {{- if eq .Values.securely_secruleconfigurator.enabled true }}
-      - name: securely-blocker
+      - name: securely-secruleconfigurator
         image: {{ .Values.securely_secruleconfigurator.image }}
         envFrom:
         - configMapRef:
@@ -63,6 +67,8 @@ spec:
       {{- if eq .Values.filebeat.enabled true }}
       - name: filebeat
         image: {{ .Values.filebeat.image }}
+        securityContext:
+          runAsUser: 0
         volumeMounts:
         - name: securely-volume
           mountPath: /opt/securely

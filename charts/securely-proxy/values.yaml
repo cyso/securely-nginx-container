@@ -25,7 +25,7 @@ securely_blocker:
       memory: "250Mi"
 
 securely_secruleconfigurator:
-  enabled: true
+  enabled: false
   image: registry.securely.ai/securely/common/secrule-configurator:latest
   config:
     GRPC_URL:
@@ -53,6 +53,8 @@ filebeat:
       memory: "500Mi"
 
 replicas: 1
+
+imagePullSecrets: []
 
 volumes:
   securely_volume:
