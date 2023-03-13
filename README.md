@@ -1,4 +1,4 @@
-# Serverless ModSecurity with OWASP Core Rule Set
+# Securely Nginx container
 
 The combination of this docker container and the helm chart provide a way of deploying the following containers in a single pod:
 
