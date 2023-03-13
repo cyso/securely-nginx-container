@@ -76,7 +76,7 @@ nginx_modsec:
 | nginx_modsec.config.PARANOIA | 1       | Sets the [paranioa level](https://coreruleset.org/20211028/working-with-paranoia-levels/) for OWASP CRS | int  |
 
 ### Securely blocker
-| Key                              | Default                      | Type |
+| Key                              | Description                      | Type |
 | -------------------------------- | ---------------------------- | ---- |
 | securely_blocker.config.GRPC_URL | Url for connecting Grpc      | str  |
 | securely_blocker.config.USERNAME | Username for connecting Grpc | str  |
@@ -85,19 +85,23 @@ nginx_modsec:
 
 ### Filebeat
 
-| Key                               | Default                                     | type |
+| Key                               | Description                                     | type |
 | --------------------------------- | ------------------------------------------- | ---- |
 | filebeat.config.organization_name | Organisation name used in Securely/Logstash | str  |
 | filebeat.config.logstash_hosts    | List of logstash hosts                      | list |
 
 ### Securely secrule configrator
-When enabled
 
-| Key                                          | Default                      | Type |
-| -------------------------------------------- | ---------------------------- | ---- |
-| securely_secruleconfigurator.config.GRPC_URL | Url for connecting Grpc      | str  |
-| securely_secruleconfigurator.config.USERNAME | Username for connecting Grpc | str  |
-| securely_secruleconfigurator.config.PASSWORD | Password for connecting Grpc | str  |
+The Securely secrule configurator is a close sourced tool and is only usable in combination with a image pull secret.
+
+It is disabled by default
+
+| Key                                          | Default | Description                            | Type |
+| -------------------------------------------- | ------- | -------------------------------------- | ---- |
+| securely_secruleconfigurator.enabled         | false   | Enable or disable Secrule configurator | bool |
+| securely_secruleconfigurator.config.GRPC_URL |         | Url for connecting Grpc                | str  |
+| securely_secruleconfigurator.config.USERNAME |         | Username for connecting Grpc           | str  |
+| securely_secruleconfigurator.config.PASSWORD |         | Password for connecting Grpc           | str  |
                                                                                                  
 # Contributing
 For information on how to contribute to this project, please see the [CONTRIBUTING](CONTRIBUTING.md) file.
