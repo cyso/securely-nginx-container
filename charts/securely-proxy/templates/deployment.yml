@@ -30,6 +30,9 @@ spec:
       - name: filebeat-config
         configMap:
           name: {{ .Release.Name }}-securely-filebeat
+      {{- with .Values.extraVolumes }}
+      {{- toYaml . | nindent 6 }}
+      {{- end }}
       containers:
       - name: nginx-modsec
         image:  {{ .Values.nginx_modsec.image }}
@@ -39,6 +42,9 @@ spec:
         volumeMounts:
         - name: securely-volume
           mountPath: /opt/securely
+        {{- with .Values.nginx_modsec.extraVolumeMounts }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
         {{- with .Values.nginx_modsec.resources }}
         resources: 
           {{- toYaml . | nindent 10 }}
@@ -60,6 +66,9 @@ spec:
         volumeMounts:
         - name: securely-volume
           mountPath: /opt/securely
+        {{- with .Values.securely_blocker.extraVolumeMounts }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
         {{- with .Values.securely_blocker.resources }}
         resources: 
           {{- toYaml . | nindent 10 }}
@@ -82,6 +91,9 @@ spec:
         volumeMounts:
         - name: securely-volume
           mountPath: /opt/securely
+        {{- with .Values.securely_secruleconfigurator.extraVolumeMounts }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
         {{- with .Values.securely_secruleconfigurator.resources }}
         resources: 
           {{- toYaml . | nindent 10 }}
@@ -107,6 +119,9 @@ spec:
           readOnly: true
           mountPath: /usr/share/filebeat/filebeat.yml
           subPath: filebeat.yml
+        {{- with .Values.filebeat.extraVolumeMounts }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
         {{- with .Values.filebeat.resources }}
         resources: 
           {{- toYaml . | nindent 10 }}

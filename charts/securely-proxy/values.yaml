@@ -22,6 +22,7 @@ nginx_modsec:
         - http://127.0.0.1/metrics/nginx
     initialDelaySeconds: 8
     periodSeconds: 5
+  extraVolumeMounts: []
 
 securely_blocker:
   enabled: true
@@ -36,6 +37,7 @@ securely_blocker:
       memory: "30Mi"
     limits:
       memory: "250Mi"
+  extraVolumeMounts: []
 
 securely_secruleconfigurator:
   enabled: false
@@ -50,6 +52,7 @@ securely_secruleconfigurator:
       memory: "30Mi"
     limits:
       memory: "250Mi"
+  extraVolumeMounts: []
 
 filebeat:
   enabled: true
@@ -64,10 +67,13 @@ filebeat:
       memory: "120Mi"
     limits:
       memory: "500Mi"
+  extraVolumeMounts: []
 
 replicas: 1
 
 imagePullSecrets: []
+
+extraVolumes: []
 
 volumes:
   securely_volume:
