@@ -4,7 +4,7 @@ The combination of this docker container and it's helm chart provide a
 
 ## TL;DR
 ```
-$ helm repo add cyso-securely-nginx-container https://cyso.github.io/securely-nginx-container/
+$ helm repo add cyso-securely-nginx-container https://charts.k8s.cyso.io/
 $ helm install my-<chart-name> cyso-securely-nginx-container/
 ```
 
@@ -23,7 +23,7 @@ Helm's [documentation](https://helm.sh/docs) to get started.
 
 Once Helm has been set up correctly, add the repo as follows:
 
-  helm repo add cyso-securely-nginx-container https://cyso.github.io/securely-nginx-container/
+  helm repo add cyso-securely-nginx-container https://charts.k8s.cyso.io/
 
 If you had already added this repo earlier, run `helm repo update` to retrieve
 the latest versions of the packages.  You can then run `helm search repo
@@ -52,7 +52,7 @@ appVersion: "1.0.0"
 
 dependencies:
   - name: securely-proxy
-    repository: "https://cyso.github.io/securely-nginx-container/"
+    repository: "https://charts.k8s.cyso.io/"
     version: "~1"
 ```
 
