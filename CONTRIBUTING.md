@@ -1,6 +1,6 @@
-# Contributing to [Project Name]
+# Contributing 
 
-Thank you for considering contributing to [Project Name]! 
+Thank you for considering contributing to this project! 
 
 ## How to Contribute
 
@@ -12,11 +12,11 @@ If you find a bug or have a suggestion for an improvement, please create an issu
 
 ### Pull Requests
 
-If you want to contribute code to [Project Name], please follow these steps:
+If you want to contribute code, please follow these steps:
 
 1. Fork the repository to your own account
-2. Create a new branch from `develop`
-3. Commit your changes to the new branch
+2. Create a new fork from `develop`
+3. Commit your changes to the new fork
 4. Test your changes to ensure they work as expected
 5. Submit a pull request to the `develop` branch of the original repository
 6. Explain the changes you made and why they are necessary in the pull request description
