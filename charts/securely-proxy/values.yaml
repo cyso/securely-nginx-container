@@ -1,5 +1,5 @@
 nginx_modsec:
-  image: bruinsieboy/securely-crs-proxy:latest
+  image: ghcr.io/cyso/securely-nginx-container:main
   config:
     # See: https://github.com/coreruleset/modsecurity-docker/blob/master/README.md#modsecurity-env-variables
     PARANOIA: "1"
