@@ -71,9 +71,10 @@ nginx_modsec:
 
 ### ModSecurity
 
-| Key                          | Default | Description                                                                                             | Type |
-| ---------------------------- | ------- | ------------------------------------------------------------------------------------------------------- | ---- |
-| nginx_modsec.config.PARANOIA | 1       | Sets the [paranioa level](https://coreruleset.org/20211028/working-with-paranoia-levels/) for OWASP CRS | int  |
+| Key                                  | Default   | Description                                                                                             | Type |
+| ------------------------------------ | --------- | ------------------------------------------------------------------------------------------------------- | ---- |
+| nginx_modsec.config.PARANOIA         | 1         | Sets the [paranioa level](https://coreruleset.org/20211028/working-with-paranoia-levels/) for OWASP CRS | int  |
+| nginx_modsec.config.SET_REAL_IP_FROM | 0.0.0.0/0 | Set the source range for wich the X-Forwarded-For header is accepted                                    |      |
 
 ### Securely blocker
 | Key                              | Description                      | Type |

@@ -3,6 +3,7 @@ nginx_modsec:
   config:
     # See: https://github.com/coreruleset/modsecurity-docker/blob/master/README.md#modsecurity-env-variables
     PARANOIA: "1"
+    SET_REAL_IP_FROM: 0.0.0.0/0
   resources:
     requests:
       cpu: "200m"
