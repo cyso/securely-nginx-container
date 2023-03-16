@@ -3,6 +3,8 @@ nginx_modsec:
   config:
     # See: https://github.com/coreruleset/modsecurity-docker/blob/master/README.md#modsecurity-env-variables
     PARANOIA: "1"
+    # Private CIDRs, see https://en.wikipedia.org/wiki/Reserved_IP_addresses
+    SET_REAL_IP_FROM: 10.0.0.0/8,100.64.0.0/10,172.16.0.0/12,192.168.0.0/16,198.18.0.0/15
   resources:
     requests:
       cpu: "200m"
@@ -74,6 +76,15 @@ replicas: 1
 imagePullSecrets: []
 
 extraVolumes: []
+
+tolerations: []
+nodeSelector: {}
+affinity: {}
+
+topologySpreadConstraints:
+- maxSkew: 1
+  topologyKey: kubernetes.io/hostname
+  whenUnsatisfiable: ScheduleAnyway
 
 volumes:
   securely_volume:

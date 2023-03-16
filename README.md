@@ -5,7 +5,7 @@ The combination of this docker container and the helm chart provide a way of dep
 * Nginx with Modsecurity, based on: https://github.com/coreruleset/modsecurity-crs-docker/tree/master
 * Securely components:
   * [Securely blocker](https://git.securely.ai/securely/common/blocker)
-  * Securely secrule configurato (disabled by default, proprietary)
+  * Securely secrule configurator (disabled by default, proprietary)
 * Filebeat
 
 ## TL;DR
@@ -54,7 +54,7 @@ dependencies:
 ```
 
 # Values
-Check the [values.yml](/cyso/securely-nginx-container/blob/main/charts/securely-proxy/values.yaml) file for all the available settings for this chart.
+Check the [values.yml](/charts/securely-proxy/values.yaml) file for all the available settings for this chart.
 
 ## Values by `nginx_modsec.config` 
 Environment variables of the nginx modsecurity container are used by `nginx_modsec.config`. This makes all the variables in the upstream container configurable, including [Nginx](https://github.com/coreruleset/modsecurity-crs-docker/tree/master#nginx-env-variables) and [ModSecurity](https://github.com/coreruleset/modsecurity-crs-docker/tree/master#modsecurity-env-variables) variables.
@@ -71,9 +71,10 @@ nginx_modsec:
 
 ### ModSecurity
 
-| Key                          | Default | Description                                                                                             | Type |
-| ---------------------------- | ------- | ------------------------------------------------------------------------------------------------------- | ---- |
-| nginx_modsec.config.PARANOIA | 1       | Sets the [paranioa level](https://coreruleset.org/20211028/working-with-paranoia-levels/) for OWASP CRS | int  |
+| Key                                  | Default   | Description                                                                                             | Type |
+| ------------------------------------ | --------- | ------------------------------------------------------------------------------------------------------- | ---- |
+| nginx_modsec.config.PARANOIA         | 1         | Sets the [paranioa level](https://coreruleset.org/20211028/working-with-paranoia-levels/) for OWASP CRS | int  |
+| nginx_modsec.config.SET_REAL_IP_FROM | 0.0.0.0/0 | Set the source range for wich the X-Forwarded-For header is accepted                                    |      |
 
 ### Securely blocker
 | Key                              | Description                      | Type |
