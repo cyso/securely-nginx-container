@@ -77,6 +77,15 @@ imagePullSecrets: []
 
 extraVolumes: []
 
+tolerations: []
+nodeSelector: {}
+affinity: {}
+
+topologySpreadConstraints:
+- maxSkew: 1
+  topologyKey: kubernetes.io/hostname
+  whenUnsatisfiable: ScheduleAnyway
+
 volumes:
   securely_volume:
     sizeLimit: 100Mi
