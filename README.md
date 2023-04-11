@@ -64,6 +64,7 @@ For example:
 ```
 nginx_modsec:
   config:
+    BACKEND: http://service.namespace.svc.cluster.local
     PARANOIA: 1
     MODSEC_RULE_ENGINE: DetectionOnly
 ```
@@ -73,8 +74,9 @@ nginx_modsec:
 
 | Key                                  | Default   | Description                                                                                             | Type |
 | ------------------------------------ | --------- | ------------------------------------------------------------------------------------------------------- | ---- |
+| nginx_modsec.config.BACKEND          |           | Sets the backend address for this reverse proxy. Used to point the proxy to the  upstream server        | str  |
 | nginx_modsec.config.PARANOIA         | 1         | Sets the [paranioa level](https://coreruleset.org/20211028/working-with-paranoia-levels/) for OWASP CRS | int  |
-| nginx_modsec.config.SET_REAL_IP_FROM | 0.0.0.0/0 | Set the source range for wich the X-Forwarded-For header is accepted                                    |      |
+| nginx_modsec.config.SET_REAL_IP_FROM | 0.0.0.0/0 | Set the source range for wich the X-Forwarded-For header is accepted                                    | str  |
 
 ### Securely blocker
 | Key                              | Description                      | Type |
