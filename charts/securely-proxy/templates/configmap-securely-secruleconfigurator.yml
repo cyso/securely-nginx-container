@@ -3,7 +3,7 @@
 kind: ConfigMap
 apiVersion: v1
 metadata:
-  name: {{ .Release.Name }}-securely-secruleconfigurator
+  name: {{ include "securely-proxy.fullname" . }}-securely-secruleconfigurator
 data:
   STARTUP_EXCLUSION_FILE: /opt/securely/secruleconfigurator/startup_exclusion_file.conf
   RUNTIME_EXCLUSION_FILE: /opt/securely/secruleconfigurator/runtime_exclusion_file.conf
