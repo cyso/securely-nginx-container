@@ -38,6 +38,7 @@ securely_blocker:
       cpu: "10m"
       memory: "30Mi"
     limits:
+      cpu: "250m"
       memory: "250Mi"
   extraVolumeMounts: []
 
@@ -53,6 +54,7 @@ securely_secruleconfigurator:
       cpu: "10m"
       memory: "30Mi"
     limits:
+      cpu: "250m"
       memory: "250Mi"
   extraVolumeMounts: []
 
@@ -68,6 +70,7 @@ filebeat:
       cpu: "50m"
       memory: "120Mi"
     limits:
+      cpu: "500m"
       memory: "500Mi"
   extraVolumeMounts: []
 
