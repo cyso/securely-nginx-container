@@ -1,7 +1,7 @@
 apiVersion: v2
 name: securely-proxy
 type: application
-version: 1.4.0
+version: 1.4.2
 
 description: A chart to be used to deploy an nginx proxy with owasp crs and seurely sidecars
 home: https://github.com/cyso/securely-nginx-container
