@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "securely-dashboard.fullname" . }}
+  labels:
+    {{- include "securely-dashboard.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: kibana
+      protocol: TCP
+      name: kibana
+    - port: {{ .Values.service.securelyPort }}
+      targetPort: securely
+      protocol: TCP
+      name: securely
+  selector:
+    {{- include "securely-dashboard.selectorLabels" . | nindent 4 }}

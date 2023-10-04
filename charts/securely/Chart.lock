@@ -1,0 +1,6 @@
+dependencies:
+- name: securely-dashboard
+  repository: file:///home/jochem/Projecten/k8s/cyso/securely-backend/charts/securely-dashboard
+  version: 0.1.0
+digest: sha256:19241858469f7fc1be272cbb779a321dd05e21bde7f0385616da051309fb8a23
+generated: "2023-10-04T22:26:05.423154564+02:00"

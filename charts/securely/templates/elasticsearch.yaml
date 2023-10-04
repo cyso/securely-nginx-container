@@ -1,0 +1,13 @@
+apiVersion: elasticsearch.k8s.elastic.co/v1
+kind: Elasticsearch
+metadata:
+  name: {{ include "securely.fullname" . }}
+  labels:
+    {{- include "securely.labels" . | nindent 4 }}
+spec:
+  version: "7.17.13"
+  nodeSets:
+  - name: default
+    count: 3
+    config:
+      node.store.allow_mmap: false
