@@ -114,3 +114,6 @@ securely-dashboard:
     value: /var/run/elastic-ca-certiticates/ca.crt
   - name: ELASTICSEARCH_SSL_VERIFICATIONMODE
     value: certificate
+
+eck-operator:
+  enabled: false

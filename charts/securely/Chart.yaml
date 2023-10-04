@@ -27,3 +27,7 @@ dependencies:
 - name: securely-dashboard
   version: "0.1.0"
   repository: "file:///home/jochem/Projecten/k8s/cyso/securely-backend/charts/securely-dashboard"
+- name: eck-operator
+  version: "2.9.0"
+  condition: eck-operator.enabled
+  repository: "https://helm.elastic.co"
