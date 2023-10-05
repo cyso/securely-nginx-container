@@ -2,6 +2,9 @@ imageCredentials:
   registry: registry.securely.ai
 
 dashboard:
+  resources:
+    requests:
+      cpu: 50m
   replicaCount: 2
   maxUnavailable: 1
 
@@ -22,6 +25,11 @@ dashboard:
     value: K1W1mjKbTbBivfeog9fx0L4WKj27nERr'
 
 logstash:
+  resources:
+    requests:
+      cpu: 250m
+    limits:
+      cpu: 1000m 
   replicaCount: 2
   maxUnavailable: 1
 
