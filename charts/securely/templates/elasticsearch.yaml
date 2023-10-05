@@ -5,9 +5,6 @@ metadata:
   labels:
     {{- include "securely.labels" . | nindent 4 }}
 spec:
-  version: "7.17.13"
-  nodeSets:
-  - name: default
-    count: 3
-    config:
-      node.store.allow_mmap: false
+{{- with .Values.elasticsearch }}
+  {{- toYaml . | nindent 2 }}
+{{- end }}
