@@ -8,7 +8,7 @@ image:
   repository: nginx
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: ""
+  tag: "7-8"
 
 imageCredentials:
   registry: registry.securely.ai
@@ -84,7 +84,9 @@ tolerations: []
 
 affinity: {}
 
-securely-dashboard:
+dashboard:
+  replicaCount: 2
+
   imagePullSecrets:
     - name: securely-pullsecret
 
@@ -97,7 +99,7 @@ securely-dashboard:
   - name: elastic-ca-certiticates
     secret:
       secretName: securely-es-http-certs-public
-
+  
   env:
   - name: ELASTICSEARCH_USERNAME
     value: elastic
@@ -115,5 +117,45 @@ securely-dashboard:
   - name: ELASTICSEARCH_SSL_VERIFICATIONMODE
     value: certificate
 
-eck-operator:
-  enabled: false
+logstash:
+  replicaCount: 2
+
+  imagePullSecrets:
+    - name: securely-pullsecret
+
+  extraVolumeMounts: 
+  - name: elastic-ca-certiticates
+    mountPath: /usr/share/logstash/plugin-configuration/cacert.pem
+    readOnly: true
+    subPath: ca.crt
+
+  extraVolumes: 
+  - name: elastic-ca-certiticates
+    secret:
+      secretName: securely-es-http-certs-public
+    
+  env: 
+  - name: ES_USERNAME
+    value: elastic
+  - name: ES_PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: securely-es-elastic-user
+        key: elastic
+  - name: ES_HOST
+    value: 'https://securely-es-http:9200'
+  - name: SSL_VERIFY
+    value: 'false'
+  - name: xpack.monitoring.enabled
+    value: 'true'
+  - name: xpack.monitoring.elasticsearch.hosts
+    value: '["https://securely-es-http:9200"]'
+  - name: xpack.monitoring.elasticsearch.username
+    value: elastic
+  - name: xpack.monitoring.elasticsearch.password
+    valueFrom:
+      secretKeyRef:
+        name: securely-es-elastic-user
+        key: elastic
+  - name: xpack.monitoring.elasticsearch.ssl.certificate_authority
+    value: /usr/share/logstash/plugin-configuration/cacert.pem

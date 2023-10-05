@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "securely-logstash.fullname" . }}
+  labels:
+    {{- include "securely-logstash.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: logstash
+      protocol: TCP
+      name: logstash
+  selector:
+    {{- include "securely-logstash.selectorLabels" . | nindent 4 }}
