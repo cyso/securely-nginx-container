@@ -1,4 +1,4 @@
-FROM owasp/modsecurity-crs:3.3.4-nginx-alpine-202211240811
+FROM owasp/modsecurity-crs:3.3.5-nginx-alpine-202310170110
 
 RUN mkdir -p /opt/securely
     
