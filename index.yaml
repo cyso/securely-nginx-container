@@ -2,6 +2,23 @@ apiVersion: v1
 entries:
   securely-proxy:
   - apiVersion: v2
+    created: "2023-12-01T09:51:57.891604844Z"
+    description: A chart to be used to deploy an nginx proxy with owasp crs and seurely
+      sidecars
+    digest: 5d3bbaa1ff5e0b69ed2f070e59480180579ee6d20132d0087270dcfaf0bd6b96
+    home: https://github.com/cyso/securely-nginx-container
+    icon: https://cdn.cyso.nl/logos/beeldmerk_wit_100.png
+    maintainers:
+    - name: Jochem (Cyso)
+      url: https://github.com/TheChef23
+    name: securely-proxy
+    sources:
+    - https://github.com/cyso/securely-nginx-container
+    type: application
+    urls:
+    - https://github.com/cyso/securely-nginx-container/releases/download/securely-proxy-1.4.4/securely-proxy-1.4.4.tgz
+    version: 1.4.4
+  - apiVersion: v2
     created: "2023-10-02T11:55:38.204382152Z"
     description: A chart to be used to deploy an nginx proxy with owasp crs and seurely
       sidecars
@@ -103,4 +120,4 @@ entries:
     urls:
     - https://github.com/cyso/securely-nginx-container/releases/download/securely-proxy-1.0.1/securely-proxy-1.0.1.tgz
     version: 1.0.1
-generated: "2023-10-02T11:55:38.204402552Z"
+generated: "2023-12-01T09:51:57.891639318Z"
