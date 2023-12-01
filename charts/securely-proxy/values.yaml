@@ -26,6 +26,11 @@ nginx_modsec:
     periodSeconds: 5
   extraVolumeMounts: []
 
+  lifecycle: 
+    preStop:
+      exec:
+        command: ["/bin/sh", "-c", "sleep 10"]
+
 securely_blocker:
   enabled: true
   image: registry.securely.ai/securely/common/blocker:latest

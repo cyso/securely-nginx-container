@@ -57,6 +57,10 @@ spec:
         readinessProbe:
           {{- toYaml . | nindent 10 }}
         {{- end }}
+        {{- with .Values.nginx_modsec.lifecycle }}
+        lifecycle:
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
       {{- if eq .Values.securely_blocker.enabled true }}
       - name: securely-blocker
         image: {{ .Values.securely_blocker.image }}
