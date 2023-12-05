@@ -1,0 +1,75 @@
+ingress-nginx:
+  controller: 
+    config:
+      # Enable ModSecurity and OWASP ModSecurity CRS 
+      enable-modsecurity: "true"
+      enable-owasp-modsecurity-crs: "true"
+  
+    # shareProcessNamespace enables process namespace sharing within the pod.
+    # This can be used for example to signal log rotation using `kill -USR1` from a sidecar.
+    shareProcessNamespace: true
+    
+    extraContainers:
+    # Run the Securely blocker container with required resources (CPU & Memory)
+    - name: securely-blocker
+      image: registry.securely.ai/securely/common/blocker:latest
+      envFrom:
+      - configMapRef:
+          name: securely-blocker
+      volumeMounts:
+      - name: securely-volume
+        mountPath: /opt/securely
+      resources: 
+        requests:
+          cpu: "10m"
+          memory: "30Mi"
+        limits:
+          memory: "250Mi"
+  
+    extraVolumeMounts:
+    - name: securely-volume
+      mountPath: /opt/securely
+
+    extraVolumes:
+    - name: securely-volume
+      emptyDir:
+        sizeLimit: 100Mi
+    - name: filebeat-config
+      configMap:
+        name: securely-filebeat
+
+securely_blocker:
+  config:
+    GRPC_URL: CHANGEME
+    USERNAME: CHANGEME
+    PASSWORD: CHANGEME
+
+securely_secruleconfigurator:
+  enabled: false
+  image: registry.securely.ai/securely/common/secrule-configurator:latest
+  config:
+    GRPC_URL:
+    USERNAME:
+    PASSWORD:
+  resources:
+    requests:
+      cpu: "10m"
+      memory: "30Mi"
+    limits:
+      memory: "250Mi"
+  extraVolumeMounts: []
+
+filebeat:
+  enabled: true
+  image: docker.elastic.co/beats/filebeat:7.17.15
+  config:
+    organization_name: CHANGEME
+    service_name: CHANGEME
+    logstash_hosts: CHANGEME
+  resources:
+    requests:
+      cpu: "50m"
+      memory: "120Mi"
+    limits:
+      memory: "500Mi"
+  extraVolumeMounts: []
