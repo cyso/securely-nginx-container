@@ -1,0 +1,21 @@
+apiVersion: v2
+name: ingress-nginx-securely
+description: A Helm chart that implements Securely tooling for the nginx-ingress controller
+
+type: application
+version: 0.1.0
+appVersion: "4.8.4"
+
+home: https://github.com/cyso/securely-nginx-container
+icon: https://cdn.cyso.nl/logos/beeldmerk_wit_100.png
+
+sources:
+  - https://github.com/cyso/securely-nginx-container
+maintainers: 
+- name: Jochem (Cyso)
+  url: https://github.com/TheChef23
+
+dependencies:
+- name: ingress-nginx
+  version: "4.8.4"
+  repository: "https://kubernetes.github.io/ingress-nginx"
