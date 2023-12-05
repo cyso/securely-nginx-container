@@ -63,22 +63,54 @@ logstash:
 
 elasticsearch:
   version: "7.17.13"
-  nodeSets:
-  - name: default
-    count: 3
-    config:
-      node.store.allow_mmap: false
-    volumeClaimTemplates:
-    - metadata:
-        name: elasticsearch-data 
-      spec:
-        accessModes:
-        - ReadWriteOnce
-        resources:
-          requests:
-            storage: 20Gi
-        storageClassName: default
+
   http:
     tls:
       selfSignedCertificate:
         disabled: true
+
+traefik:
+  deployment:
+    lifecycle: 
+      preStop:
+        exec:
+          command: ["/bin/sh", "-c", "sleep 10"]
+  service:
+    type: LoadBalancer
+
+  ingressClass:
+    enabled: false
+
+  providers:
+    kubernetesCRD:
+      enabled: true
+      ingressClass: traefik-internal
+    kubernetesIngress:
+      enabled: false
+
+  ingressRoute:
+    dashboard:
+      annotations: 
+        kubernetes.io/ingress.class: traefik-internal
+  rbac:
+    enabled: true
+    namespaced: true
+
+  additionalArguments:
+  - "--entryPoints.logstash.address=:5044/tcp"
+
+  ports:
+    logstash:
+      port: 5044
+      expose: true
+      hostPort: 5044
+      exposedPort: 5044
+      protocol: TCP
+      tls:
+        enabled: true
+  logs:
+    access:
+    enabled: true
+
+ingress:
+  host: exmaple.com

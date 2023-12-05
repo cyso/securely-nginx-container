@@ -5,5 +5,8 @@ dependencies:
 - name: securely-logstash
   repository: file://../securely-logstash
   version: 0.1.0
-digest: sha256:a5082020f196052b863e7edea0465617a45e329253efcf7f96dbd01006b4f89f
-generated: "2023-10-05T19:43:05.78712749+02:00"
+- name: traefik
+  repository: https://helm.traefik.io/traefik
+  version: 24.0.0
+digest: sha256:1ce69f3c2d9d04afed1b3e903030940e5ebea122a3e2a27a503ee633ca7b408b
+generated: "2023-11-13T18:05:33.039064002+01:00"
