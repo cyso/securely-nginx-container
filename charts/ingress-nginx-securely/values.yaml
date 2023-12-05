@@ -1,4 +1,8 @@
 ingress-nginx:
+  # Sets required imgpullsecret 
+  imagePullSecrets:
+  - name: securely-secruleconfigurator-pullsecret
+
   controller: 
     config:
       # Enable ModSecurity and OWASP ModSecurity CRS 
@@ -6,11 +10,10 @@ ingress-nginx:
       enable-owasp-modsecurity-crs: "true"
   
     # shareProcessNamespace enables process namespace sharing within the pod.
-    # This can be used for example to signal log rotation using `kill -USR1` from a sidecar.
     shareProcessNamespace: true
     
     extraContainers:
-    # Run the Securely blocker container with required resources (CPU & Memory)
+    # Run the Securely blocker sidecar
     - name: securely-blocker
       image: registry.securely.ai/securely/common/blocker:latest
       envFrom:
@@ -20,6 +23,22 @@ ingress-nginx:
       - name: securely-volume
         mountPath: /opt/securely
       resources: 
+        requests:
+          cpu: "10m"
+          memory: "30Mi"
+        limits:
+          memory: "250Mi"
+
+    # Run the Securely SecRule configurator sidecar
+    - name: securely-secruleconfigurator
+      image: registry.securely.ai/securely/common/secrule-configurator:latest
+      envFrom:
+      - configMapRef:
+          name: securely-secruleconfigurator
+      volumeMounts:
+      - name: securely-volume
+        mountPath: /opt/securely
+      resources:
         requests:
           cpu: "10m"
           memory: "30Mi"
@@ -45,19 +64,14 @@ securely_blocker:
     PASSWORD: CHANGEME
 
 securely_secruleconfigurator:
-  enabled: false
-  image: registry.securely.ai/securely/common/secrule-configurator:latest
   config:
-    GRPC_URL:
-    USERNAME:
-    PASSWORD:
-  resources:
-    requests:
-      cpu: "10m"
-      memory: "30Mi"
-    limits:
-      memory: "250Mi"
-  extraVolumeMounts: []
+    GRPC_URL: CHANGEME
+    USERNAME: CHANGEME
+    PASSWORD: CHANGEME
+  imageCredentials:
+    registry: registry.securely.ai/securely/common/secrule-configurator
+    username: CHANGEME
+    password: CHANGEME
 
 filebeat:
   enabled: true
