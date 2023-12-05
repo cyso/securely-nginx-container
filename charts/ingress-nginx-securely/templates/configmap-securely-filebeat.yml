@@ -1,0 +1,38 @@
+---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: securely-filebeat
+  labels:
+    {{- include "ingress-nginx-securely.labels" . | nindent 4 }}
+data:
+  filebeat.yml: |
+    filebeat.inputs:
+    - type: log
+      paths:
+        - /opt/securely/access.log
+      fields:
+        event.module: nginx
+        event.dataset: nginx.access
+        organization.name: {{ .Values.filebeat.config.organization_name}}
+        {{- with .Values.filebeat.config.service_name }}
+        service.name: {{ . }}
+        {{- end }}
+    - type: log
+      paths:
+        - /opt/securely/modsec_audit.log
+      fields:
+        event.module: modsecurity
+        event.dataset: modsecurity.audit
+        organization.name: {{ .Values.filebeat.config.organization_name}}
+        {{- with .Values.filebeat.config.service_name }}
+        service.name: {{ . }}
+        {{- end }}
+      multiline:
+        pattern: "^-{2,3}[a-zA-Z0-9]{8}-{1,3}Z--$"
+        negate: true
+        match: before
+    output.logstash:
+      # The Logstash hosts
+      hosts:
+        {{ toYaml .Values.filebeat.config.logstash_hosts}}

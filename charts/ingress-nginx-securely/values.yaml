@@ -44,6 +44,26 @@ ingress-nginx:
           memory: "30Mi"
         limits:
           memory: "250Mi"
+
+    # Run the filebeat sidecar
+    - name: filebeat
+      image: docker.elastic.co/beats/filebeat:7.17.15
+      envFrom:
+        - configMapRef:
+            name: securely-secruleconfigurator
+      volumeMounts:
+      - name: securely-volume
+        mountPath: /opt/securely
+      - name: filebeat-config
+        readOnly: true
+        mountPath: /usr/share/filebeat/filebeat.yml
+        subPath: filebeat.yml
+      resources:
+        requests:
+          cpu: "50m"
+          memory: "120Mi"
+        limits:
+          memory: "500Mi"
   
     extraVolumeMounts:
     - name: securely-volume
@@ -74,16 +94,7 @@ securely_secruleconfigurator:
     password: CHANGEME
 
 filebeat:
-  enabled: true
-  image: docker.elastic.co/beats/filebeat:7.17.15
   config:
     organization_name: CHANGEME
     service_name: CHANGEME
     logstash_hosts: CHANGEME
-  resources:
-    requests:
-      cpu: "50m"
-      memory: "120Mi"
-    limits:
-      memory: "500Mi"
-  extraVolumeMounts: []
