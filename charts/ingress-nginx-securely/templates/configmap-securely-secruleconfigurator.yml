@@ -10,4 +10,5 @@ data:
   RUNTIME_EXCLUSION_FILE: /opt/securely/secruleconfigurator/runtime_exclusion_file.conf
   STARTUP_BLOCKING_RULES_FILE: /opt/securely/secruleconfigurator/startup_blocking_rules_file.conf
   RUNTIME_BLOCKING_RULES_FILE: /opt/securely/secruleconfigurator/runtime_blocking_rules_file.conf
+  POST_COMMAND: /bin/sh /opt/scripts/reload-nginx.sh
   {{- toYaml .Values.securely_secruleconfigurator.config  | nindent 2}}
