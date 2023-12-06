@@ -1,3 +1,26 @@
+# REQUIRED VALUES
+securely_blocker:
+  config:
+    GRPC_URL: 
+    USERNAME: 
+    PASSWORD: 
+
+securely_secruleconfigurator:
+  config:
+    GRPC_URL: 
+    USERNAME: 
+    PASSWORD: 
+  imageCredentials:
+    username: 
+    password: 
+
+filebeat:
+  config:
+    organization_name: 
+    service_name: 
+    logstash_hosts: 
+
+# Nginx ingress subchart values
 ingress-nginx:
   # Sets required imgpullsecret 
   imagePullSecrets:
@@ -12,6 +35,17 @@ ingress-nginx:
     # shareProcessNamespace enables process namespace sharing within the pod.
     shareProcessNamespace: true
     
+    extraInitContainers: 
+    # Initiate folder and files
+    - name: init-files
+      image: busybox
+      command: ['sh', '/opt/scripts/init-files.sh']
+      volumeMounts:
+      - name: securely-volume
+        mountPath: /opt/securely
+      - name: securely-scripts
+        mountPath: /opt/scripts
+      
     extraContainers:
     # Run the Securely blocker sidecar
     - name: securely-blocker
@@ -22,6 +56,8 @@ ingress-nginx:
       volumeMounts:
       - name: securely-volume
         mountPath: /opt/securely
+      - name: securely-scripts
+        mountPath: /opt/scripts
       resources: 
         requests:
           cpu: "10m"
@@ -38,6 +74,8 @@ ingress-nginx:
       volumeMounts:
       - name: securely-volume
         mountPath: /opt/securely
+      - name: securely-scripts
+        mountPath: /opt/scripts
       resources:
         requests:
           cpu: "10m"
@@ -73,28 +111,16 @@ ingress-nginx:
     - name: securely-volume
       emptyDir:
         sizeLimit: 100Mi
+    - name: securely-scripts
+      configMap:
+        name: securely-scripts
     - name: filebeat-config
       configMap:
         name: securely-filebeat
-
-securely_blocker:
-  config:
-    GRPC_URL: CHANGEME
-    USERNAME: CHANGEME
-    PASSWORD: CHANGEME
+    - name: securely-scripts
+      configMap:
+        name: securely-scripts
 
 securely_secruleconfigurator:
-  config:
-    GRPC_URL: CHANGEME
-    USERNAME: CHANGEME
-    PASSWORD: CHANGEME
   imageCredentials:
     registry: registry.securely.ai/securely/common/secrule-configurator
-    username: CHANGEME
-    password: CHANGEME
-
-filebeat:
-  config:
-    organization_name: CHANGEME
-    service_name: CHANGEME
-    logstash_hosts: CHANGEME
