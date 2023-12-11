@@ -106,6 +106,9 @@ ingress-nginx:
     extraVolumeMounts:
     - name: securely-volume
       mountPath: /opt/securely
+    - name: securely-config
+      mountPath: /etc/nginx/owasp-modsecurity-crs/nginx-modsecurity.conf
+      subPath: nginx-modsecurity.conf
 
     extraVolumes:
     - name: securely-volume
@@ -120,6 +123,9 @@ ingress-nginx:
     - name: securely-scripts
       configMap:
         name: securely-scripts
+    - name: securely-config
+      configMap:
+        name: securely-config
 
 securely_secruleconfigurator:
   imageCredentials:

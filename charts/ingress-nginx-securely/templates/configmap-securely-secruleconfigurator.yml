@@ -6,9 +6,9 @@ metadata:
   labels:
     {{- include "ingress-nginx-securely.labels" . | nindent 4 }}
 data:
-  STARTUP_EXCLUSION_FILE: /opt/securely/secruleconfigurator/startup_exclusion_file.conf
-  RUNTIME_EXCLUSION_FILE: /opt/securely/secruleconfigurator/runtime_exclusion_file.conf
-  STARTUP_BLOCKING_RULES_FILE: /opt/securely/secruleconfigurator/startup_blocking_rules_file.conf
-  RUNTIME_BLOCKING_RULES_FILE: /opt/securely/secruleconfigurator/runtime_blocking_rules_file.conf
+  STARTUP_EXCLUSION_FILE: /opt/securely/conf/startup_exclusion_file.conf
+  RUNTIME_EXCLUSION_FILE: /opt/securely/conf/runtime_exclusion_file.conf
+  STARTUP_BLOCKING_RULES_FILE: /opt/securely/conf/startup_blocking_rules_file.conf
+  RUNTIME_BLOCKING_RULES_FILE: /opt/securely/conf/runtime_blocking_rules_file.conf
   POST_COMMAND: /bin/sh /opt/scripts/reload-nginx.sh
   {{- toYaml .Values.securely_secruleconfigurator.config  | nindent 2}}
