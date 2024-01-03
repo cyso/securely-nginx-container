@@ -7,5 +7,5 @@ metadata:
     {{- include "ingress-nginx-securely.labels" . | nindent 4 }}
 data:
   FILE: /opt/securely/blocker-db 
-  POST_SCRIPT: /bin/sh /opt/scripts/reload-nginx.sh
+  FILE_POST_COMMAND: /bin/sh /opt/scripts/reload-nginx.sh
   {{- toYaml .Values.securely_blocker.config  | nindent 2}}
