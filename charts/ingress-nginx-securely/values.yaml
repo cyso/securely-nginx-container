@@ -31,6 +31,15 @@ ingress-nginx:
       # Enable ModSecurity and OWASP ModSecurity CRS 
       enable-modsecurity: "true"
       enable-owasp-modsecurity-crs: "true"
+
+      # Set access log to readable path
+      access-log-path: /opt/securely-logs/access.log
+
+      # Set modsecurity config
+      modsecurity-snippet: |
+        SecAuditEngine RelevantOnly
+        SecAuditLogType Serial
+        SecAuditLog /opt/securely-logs/modsec_audit.log
   
     # shareProcessNamespace enables process namespace sharing within the pod.
     shareProcessNamespace: true
@@ -38,7 +47,7 @@ ingress-nginx:
     extraInitContainers: 
     # Initiate folder and files
     - name: init-files
-      image: busybox
+      image: registry.k8s.io/busybox
       command: ['sh', '/opt/scripts/init-files.sh']
       volumeMounts:
       - name: securely-volume
@@ -90,8 +99,8 @@ ingress-nginx:
         - configMapRef:
             name: securely-secruleconfigurator
       volumeMounts:
-      - name: securely-volume
-        mountPath: /opt/securely
+      - name: securely-logs
+        mountPath: /opt/securely-logs
       - name: filebeat-config
         readOnly: true
         mountPath: /usr/share/filebeat/filebeat.yml
@@ -102,16 +111,39 @@ ingress-nginx:
           memory: "120Mi"
         limits:
           memory: "500Mi"
+      securityContext:
+        runAsUser: 0
+
+    # Log rotate container
+    - name: logrotate
+      image: registry.k8s.io/ubuntu-slim:0.14
+      command: ['sh', '/opt/scripts/logrotate.sh']
+      volumeMounts:
+      - name: securely-logs
+        mountPath: /opt/securely-logs
+      - name: securely-scripts
+        mountPath: /opt/scripts
+      resources:
+        requests:
+          cpu: "5m"
+          memory: "10Mi"
+        limits:
+          memory: "50Mi"
   
     extraVolumeMounts:
     - name: securely-volume
       mountPath: /opt/securely
+    - name: securely-logs
+      mountPath: /opt/securely-logs
     - name: securely-config
       mountPath: /etc/nginx/owasp-modsecurity-crs/nginx-modsecurity.conf
       subPath: nginx-modsecurity.conf
 
     extraVolumes:
     - name: securely-volume
+      emptyDir:
+        sizeLimit: 100Mi
+    - name: securely-logs
       emptyDir:
         sizeLimit: 100Mi
     - name: securely-scripts

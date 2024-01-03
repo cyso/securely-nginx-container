@@ -10,7 +10,7 @@ data:
     filebeat.inputs:
     - type: log
       paths:
-        - /opt/securely/access.log
+        - /opt/securely-logs/access.log
       fields:
         event.module: nginx
         event.dataset: nginx.access
@@ -20,7 +20,7 @@ data:
         {{- end }}
     - type: log
       paths:
-        - /opt/securely/modsec_audit.log
+        - /opt/securely-logs/modsec_audit.log
       fields:
         event.module: modsecurity
         event.dataset: modsecurity.audit
