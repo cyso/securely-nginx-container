@@ -12,6 +12,18 @@ do
     sleep 5
   fi
 done
+echo "Nginx process found, continuing script"
+
+echo "Running nginx config test"
+nginx -t 
+exit_status=$?
+
+if [ $exit_status -ne 0 ]
+then
+  echo "Nginx configtest failed"
+  killall /app
+  exit 1
+fi
 
 NGINX_PID=$(pgrep "nginx: master")
 

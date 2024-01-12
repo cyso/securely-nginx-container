@@ -58,7 +58,7 @@ ingress-nginx:
     extraContainers:
     # Run the Securely blocker sidecar
     - name: securely-blocker
-      image: registry.securely.ai/securely/common/blocker:latest
+      image: registry.securely.ai/securely/common/blocker:add-nginx-binary
       envFrom:
       - configMapRef:
           name: securely-blocker
@@ -67,6 +67,9 @@ ingress-nginx:
         mountPath: /opt/securely
       - name: securely-scripts
         mountPath: /opt/scripts
+      - name: securely-config
+        mountPath: /etc/nginx/owasp-modsecurity-crs/nginx-modsecurity.conf
+        subPath: nginx-modsecurity.conf
       resources: 
         requests:
           cpu: "10m"
@@ -76,7 +79,7 @@ ingress-nginx:
 
     # Run the Securely SecRule configurator sidecar
     - name: securely-secruleconfigurator
-      image: registry.securely.ai/securely/common/secrule-configurator:latest
+      image: registry.securely.ai/securely/common/secrule-configurator:add-nginx-binary
       envFrom:
       - configMapRef:
           name: securely-secruleconfigurator
@@ -85,6 +88,9 @@ ingress-nginx:
         mountPath: /opt/securely
       - name: securely-scripts
         mountPath: /opt/scripts
+      - name: securely-config
+        mountPath: /etc/nginx/owasp-modsecurity-crs/nginx-modsecurity.conf
+        subPath: nginx-modsecurity.conf
       resources:
         requests:
           cpu: "10m"
