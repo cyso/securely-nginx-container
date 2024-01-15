@@ -76,7 +76,7 @@ traefik:
         exec:
           command: ["/bin/sh", "-c", "sleep 10"]
   service:
-    type: LoadBalancer
+    type: Service
 
   ingressClass:
     enabled: false
