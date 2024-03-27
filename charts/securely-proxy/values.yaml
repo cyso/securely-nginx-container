@@ -26,6 +26,11 @@ nginx_modsec:
     periodSeconds: 5
   extraVolumeMounts: []
 
+  lifecycle: 
+    preStop:
+      exec:
+        command: ["/bin/sh", "-c", "sleep 10"]
+
 securely_blocker:
   enabled: true
   image: registry.securely.ai/securely/common/blocker:latest
@@ -58,7 +63,7 @@ securely_secruleconfigurator:
 
 filebeat:
   enabled: true
-  image: docker.elastic.co/beats/filebeat:7.17.7
+  image: docker.elastic.co/beats/filebeat:7.17.15
   config:
     organization_name:
     service_name:
