@@ -1,5 +1,28 @@
 apiVersion: v1
 entries:
+  ingress-nginx-securely:
+  - apiVersion: v2
+    appVersion: 4.10.0
+    created: "2024-03-27T13:08:39.847651714Z"
+    dependencies:
+    - name: ingress-nginx
+      repository: https://kubernetes.github.io/ingress-nginx
+      version: 4.10.0
+    description: A Helm chart that implements Securely tooling for the nginx-ingress
+      controller
+    digest: 6c0feca4e7b3b8eece7b94cfa796e0363cbc7ffcf845990a2d9ede15c86550e7
+    home: https://github.com/cyso/securely-nginx-container
+    icon: https://cdn.cyso.nl/logos/beeldmerk_wit_100.png
+    maintainers:
+    - name: Jochem (Cyso)
+      url: https://github.com/TheChef23
+    name: ingress-nginx-securely
+    sources:
+    - https://github.com/cyso/securely-nginx-container
+    type: application
+    urls:
+    - https://github.com/cyso/securely-nginx-container/releases/download/ingress-nginx-securely-0.1.0/ingress-nginx-securely-0.1.0.tgz
+    version: 0.1.0
   securely-proxy:
   - apiVersion: v2
     created: "2023-12-01T09:51:57.891604844Z"
@@ -120,4 +143,4 @@ entries:
     urls:
     - https://github.com/cyso/securely-nginx-container/releases/download/securely-proxy-1.0.1/securely-proxy-1.0.1.tgz
     version: 1.0.1
-generated: "2023-12-01T09:51:57.891639318Z"
+generated: "2024-03-27T13:08:40.021986856Z"
