@@ -1,0 +1,11 @@
+---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: securely-blocker
+  labels:
+    {{- include "ingress-nginx-securely.labels" . | nindent 4 }}
+data:
+  FILE: /opt/securely/blocker-db 
+  FILE_POST_COMMAND: /bin/sh /opt/scripts/reload-nginx.sh
+  {{- toYaml .Values.securely_blocker.config  | nindent 2}}

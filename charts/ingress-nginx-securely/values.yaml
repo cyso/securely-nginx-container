@@ -1,0 +1,170 @@
+# REQUIRED VALUES
+securely_blocker:
+  config:
+    GRPC_URL: 
+    USERNAME: 
+    PASSWORD: 
+
+securely_secruleconfigurator:
+  config:
+    GRPC_URL: 
+    USERNAME: 
+    PASSWORD: 
+  imageCredentials:
+    username: 
+    password: 
+
+filebeat:
+  config:
+    organization_name: 
+    service_name: 
+    logstash_hosts: 
+
+# Nginx ingress subchart values
+ingress-nginx:
+  # Sets required imgpullsecret 
+  imagePullSecrets:
+  - name: securely-secruleconfigurator-pullsecret
+
+  controller: 
+    config:
+      # Enable ModSecurity and OWASP ModSecurity CRS 
+      enable-modsecurity: "true"
+      enable-owasp-modsecurity-crs: "true"
+
+      # Set access log to readable path
+      access-log-path: /opt/securely-logs/access.log
+
+      # Set modsecurity config
+      modsecurity-snippet: |
+        SecAuditEngine RelevantOnly
+        SecAuditLogType Serial
+        SecAuditLog /opt/securely-logs/modsec_audit.log
+  
+    # shareProcessNamespace enables process namespace sharing within the pod.
+    shareProcessNamespace: true
+    
+    extraInitContainers: 
+    # Initiate folder and files
+    - name: init-files
+      image: registry.k8s.io/busybox
+      command: ['sh', '/opt/scripts/init-files.sh']
+      volumeMounts:
+      - name: securely-volume
+        mountPath: /opt/securely
+      - name: securely-scripts
+        mountPath: /opt/scripts
+      
+    extraContainers:
+    # Run the Securely blocker sidecar
+    - name: securely-blocker
+      image: registry.securely.ai/securely/common/blocker:add-nginx-binary
+      envFrom:
+      - configMapRef:
+          name: securely-blocker
+      volumeMounts:
+      - name: securely-volume
+        mountPath: /opt/securely
+      - name: securely-scripts
+        mountPath: /opt/scripts
+      - name: securely-config
+        mountPath: /etc/nginx/owasp-modsecurity-crs/nginx-modsecurity.conf
+        subPath: nginx-modsecurity.conf
+      resources: 
+        requests:
+          cpu: "10m"
+          memory: "30Mi"
+        limits:
+          memory: "250Mi"
+
+    # Run the Securely SecRule configurator sidecar
+    - name: securely-secruleconfigurator
+      image: registry.securely.ai/securely/common/secrule-configurator:add-nginx-binary
+      envFrom:
+      - configMapRef:
+          name: securely-secruleconfigurator
+      volumeMounts:
+      - name: securely-volume
+        mountPath: /opt/securely
+      - name: securely-scripts
+        mountPath: /opt/scripts
+      - name: securely-config
+        mountPath: /etc/nginx/owasp-modsecurity-crs/nginx-modsecurity.conf
+        subPath: nginx-modsecurity.conf
+      resources:
+        requests:
+          cpu: "10m"
+          memory: "30Mi"
+        limits:
+          memory: "250Mi"
+
+    # Run the filebeat sidecar
+    - name: filebeat
+      image: docker.elastic.co/beats/filebeat:7.17.15
+      envFrom:
+        - configMapRef:
+            name: securely-secruleconfigurator
+      volumeMounts:
+      - name: securely-logs
+        mountPath: /opt/securely-logs
+      - name: filebeat-config
+        readOnly: true
+        mountPath: /usr/share/filebeat/filebeat.yml
+        subPath: filebeat.yml
+      resources:
+        requests:
+          cpu: "50m"
+          memory: "120Mi"
+        limits:
+          memory: "500Mi"
+      securityContext:
+        runAsUser: 0
+
+    # Log rotate container
+    - name: logrotate
+      image: registry.k8s.io/ubuntu-slim:0.14
+      command: ['sh', '/opt/scripts/logrotate.sh']
+      volumeMounts:
+      - name: securely-logs
+        mountPath: /opt/securely-logs
+      - name: securely-scripts
+        mountPath: /opt/scripts
+      resources:
+        requests:
+          cpu: "5m"
+          memory: "10Mi"
+        limits:
+          memory: "50Mi"
+  
+    extraVolumeMounts:
+    - name: securely-volume
+      mountPath: /opt/securely
+    - name: securely-logs
+      mountPath: /opt/securely-logs
+    - name: securely-config
+      mountPath: /etc/nginx/owasp-modsecurity-crs/nginx-modsecurity.conf
+      subPath: nginx-modsecurity.conf
+
+    extraVolumes:
+    - name: securely-volume
+      emptyDir:
+        sizeLimit: 100Mi
+    - name: securely-logs
+      emptyDir:
+        sizeLimit: 100Mi
+    - name: securely-scripts
+      configMap:
+        name: securely-scripts
+    - name: filebeat-config
+      configMap:
+        name: securely-filebeat
+    - name: securely-scripts
+      configMap:
+        name: securely-scripts
+    - name: securely-config
+      configMap:
+        name: securely-config
+
+securely_secruleconfigurator:
+  imageCredentials:
+    registry: registry.securely.ai/securely/common/secrule-configurator
