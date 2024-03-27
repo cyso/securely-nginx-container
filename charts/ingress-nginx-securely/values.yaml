@@ -152,9 +152,6 @@ ingress-nginx:
     - name: securely-logs
       emptyDir:
         sizeLimit: 100Mi
-    - name: securely-scripts
-      configMap:
-        name: securely-scripts
     - name: filebeat-config
       configMap:
         name: securely-filebeat
