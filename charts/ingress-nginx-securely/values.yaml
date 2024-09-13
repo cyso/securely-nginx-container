@@ -58,7 +58,7 @@ ingress-nginx:
     extraContainers:
     # Run the Securely blocker sidecar
     - name: securely-blocker
-      image: registry.securely.ai/securely/common/blocker:add-nginx-binary
+      image: registry.securely.ai/securely/common/blocker:latest
       envFrom:
       - configMapRef:
           name: securely-blocker
@@ -79,7 +79,7 @@ ingress-nginx:
 
     # Run the Securely SecRule configurator sidecar
     - name: securely-secruleconfigurator
-      image: registry.securely.ai/securely/common/secrule-configurator:add-nginx-binary
+      image: registry.securely.ai/securely/common/secrule-configurator:latest
       envFrom:
       - configMapRef:
           name: securely-secruleconfigurator
