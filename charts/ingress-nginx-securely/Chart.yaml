@@ -11,9 +11,6 @@ icon: https://cdn.cyso.nl/logos/beeldmerk_wit_100.png
 
 sources:
   - https://github.com/cyso/securely-nginx-container
-maintainers: 
-- name: Jochem (Cyso)
-  url: https://github.com/TheChef23
 
 dependencies:
 - name: ingress-nginx
