@@ -11,6 +11,7 @@ securely_secruleconfigurator:
     USERNAME: 
     PASSWORD: 
   imageCredentials:
+    registry: registry.securely.ai/securely/common/secrule-configurator
     username: 
     password: 
 
@@ -161,7 +162,3 @@ ingress-nginx:
     - name: securely-config
       configMap:
         name: securely-config
-
-securely_secruleconfigurator:
-  imageCredentials:
-    registry: registry.securely.ai/securely/common/secrule-configurator
