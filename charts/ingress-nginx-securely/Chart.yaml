@@ -3,8 +3,8 @@ name: ingress-nginx-securely
 description: A Helm chart that implements Securely tooling for the nginx-ingress controller
 
 type: application
-version: 0.2.0
-appVersion: "4.10.0"
+version: 0.2.1
+appVersion: "4.11.5"
 
 home: https://github.com/cyso/securely-nginx-container
 icon: https://cdn.cyso.nl/logos/beeldmerk_wit_100.png
