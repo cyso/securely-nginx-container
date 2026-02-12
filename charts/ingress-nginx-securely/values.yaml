@@ -48,7 +48,7 @@ ingress-nginx:
     extraInitContainers: 
     # Initiate folder and files
     - name: init-files
-      image: registry.k8s.io/busybox
+      image: docker.io/library/busybox:latest
       command: ['sh', '/opt/scripts/init-files.sh']
       volumeMounts:
       - name: securely-volume
